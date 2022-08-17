@@ -39,13 +39,22 @@
       (reference "#PWR02") (unit 1) (value "GND") (footprint "")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/237c623b-e6c4-47a6-9a7c-abffa2cdfc12"
-      (reference "C1") (unit 1) (value "10u") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
+      (reference "C1") (unit 1) (value "1u") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/cdbce836-4e3a-4487-94bf-2fbd6486856c"
-      (reference "C2") (unit 1) (value "1u") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
+      (reference "C2") (unit 1) (value "10n") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/c4c96868-ff01-4937-907e-57e75ade5f13"
-      (reference "C3") (unit 1) (value "1u") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
+      (reference "C3") (unit 1) (value "100n") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/9d093337-45c9-46b4-88fd-de887014eeb4"
+      (reference "C4") (unit 1) (value "100n") (footprint "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/a619ab21-6b84-41fa-a08d-61b36e21f87a"
+      (reference "C5") (unit 1) (value "4,7u") (footprint "Capacitor_THT:C_Disc_D8.0mm_W2.5mm_P5.00mm")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/5f56bd31-c501-413b-a55c-4c1c763b2b1f"
+      (reference "J1") (unit 1) (value "Conn_01x02") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/d0e59a74-3397-450c-a8b8-7a076c6f4494"
       (reference "J3") (unit 1) (value "Conn_01x02") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
@@ -65,14 +74,32 @@
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/c8e8cf7c-f3f5-4da6-877f-b1f22c936d92"
       (reference "R4") (unit 1) (value "820") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/877b1775-42da-4625-a5c0-5cf8bc779258"
+      (reference "R5") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/8ffc477f-c9ab-4715-a030-744b262414d5"
+      (reference "R6") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+    )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/6bcf8a4f-e04a-4ea0-91d6-ae1ff3677152"
-      (reference "RV1") (unit 1) (value "R_Potentiometer") (footprint "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical")
+      (reference "RV1") (unit 1) (value "4K") (footprint "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/77ada793-0db7-4241-85f1-9c4ef7758282"
+      (reference "RV2") (unit 1) (value "20K") (footprint "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/2934f029-eee7-4587-a64e-8eca716576de"
       (reference "U1") (unit 1) (value "LM317_TO-220") (footprint "Package_TO_SOT_THT:TO-220-3_Vertical")
     )
     (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/974b9429-2da9-43c6-b678-09462f65b62d"
       (reference "U2") (unit 1) (value "TL431LP") (footprint "Package_TO_SOT_THT:TO-92")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/f1a63f0f-0dd4-40df-be56-50b30312310e"
+      (reference "U3") (unit 1) (value "LM358") (footprint "Package_DIP:DIP-8_W7.62mm")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/e4aba3f4-5931-48b9-8a29-2e2b1c65d2ea"
+      (reference "U3") (unit 2) (value "LM358") (footprint "Package_DIP:DIP-8_W7.62mm")
+    )
+    (path "/bbdf291e-1bd7-4944-8125-7f1ab6a05193/13b1cc5f-0647-440e-b3a9-4c876fdbb3a3"
+      (reference "U3") (unit 3) (value "LM358") (footprint "Package_DIP:DIP-8_W7.62mm")
     )
   )
 )
