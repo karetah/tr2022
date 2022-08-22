@@ -397,6 +397,7 @@
   )
 
 
+
   (symbol (lib_id "Transistor_FET:IRF540N") (at 206.756 115.062 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 56a238ff-473a-4930-a747-5a0b244fefd7)
@@ -439,7 +440,7 @@
   (symbol (lib_id "Relay:G5LE-1") (at 75.946 105.41 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e396bf58-8af3-4762-8218-ea13a37d7164)
-    (property "Reference" "K?" (id 0) (at 87.63 104.1399 0)
+    (property "Reference" "K1" (id 0) (at 87.63 104.1399 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "G5LE-1" (id 1) (at 87.63 106.6799 0)
