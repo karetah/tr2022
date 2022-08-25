@@ -1,6 +1,6 @@
 {
   "board": {
-    "active_layer": 49,
+    "active_layer": 31,
     "active_layer_preset": "",
     "auto_track_width": true,
     "hidden_nets": [],
@@ -65,7 +65,7 @@
     "zone_display_mode": 1
   },
   "meta": {
-    "filename": "Arduino_Nano.kicad_prl",
+    "filename": "firststep2.kicad_prl",
     "version": 3
   },
   "project": {
