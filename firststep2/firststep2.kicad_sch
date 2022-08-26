@@ -1152,7 +1152,7 @@
       (reference "J12") (unit 1) (value "RELAY_SW") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/43e7134f-b646-40ea-acc6-109f1d7eebd2/ba64b648-e0bb-40ed-b88a-a2fab714cca6"
-      (reference "J13") (unit 1) (value "RELAY_PWR") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
+      (reference "J13") (unit 1) (value "RELAY_PWR") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/43e7134f-b646-40ea-acc6-109f1d7eebd2/37c923dd-f9a4-4c93-b7d4-36947f4389b1"
       (reference "J14") (unit 1) (value "Arduino_D9") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
