@@ -6,44 +6,57 @@
 // http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf
 // https://content.arduino.cc/assets/Pinout-UNOrev3_latest.pdf
 
+uint8_t mux;
 
 void setup()
 {
 
     uint8_t sreg = SREG;
     cli();
+    // Pin Change Interrupt Control Register
+    PCICR = 
+          0
+          | (1 << PCIE2)  // Pin Change Interrupt Enable 2
+          ;  
+    // Pin Change Mask Register 2
+    PCMSK2 = 
+          0
+          | (1 << PCINT16)  // PD0 (RXD)
+          ;  
+    // External Interrupt Mask Register
+   EIMSK = 
+          0
+          | (1 << INT0)  // External Interrupt Request 0 Enable
+          ;  
+    // External Interrupt Control Register A
+   EICRA = 
+          0
+          | (1 << ISC00) | (1 << ISC01)  // Any logical change on INT0 generates an interrupt request.
+          ;        
 
     // Stop timer before configuring
     TCCR1B = 0;
 
     // ADC Control and Status Register A
-   ADCSRA |= (0 << ADEN);  // Disable ADC
-
-    // At setup, we enable the Multiplexer
-    // 
-    // ADC Multiplexer Selection Register
+   ADCSRA =
+          0
+          | (1 << ADEN) | (1 << ADATE) // Enable ADC, ADC Auto Trigger Enable
+          | (1 << ADIE)  // ADC Interrupt Enable, 
+          ;  
    ADMUX =
         0
-        | (1 << MUX0) | (1 << MUX1) | (1 << MUX2) // Select ADC7 Negative input 
-        | (1 << REFS1) | (1 << REFS0)  // Set the Internal 1.1V Voltage Reference     
+        | (1 << MUX0) | (1 << MUX1) | (1 << MUX2) // Select ADC7 ADC input 
+        | (1 << REFS1) | (1 << REFS0)  // Refs 1.1v         
         ;  
+   // ADMUX = 199; // 0xC7 // ADC7 // set TOP
+   // ADMUX = 198; // 0xC6 // ADC6 // set OCR1A
+        
    ADCSRB =
         0
-        | (1 << ACME)   // Analog Comparator Multiplexer Enable
-        | (1 << ADTS0) | (0 << ADTS1) | (0 << ADTS2) // ADC Auto Trigger Source : Analog Comparator 
+        | (0 << ACME)   // Analog Comparator Multiplexer Enable
+        | (0 << ADTS0) | (1 << ADTS1) | (0 << ADTS2) // ADC Auto Trigger Source : External Interrupt Request 0 
         ;
-    // Analog Comparator Control and Status Register
-   ACSR =
-        0
-        | (0 << ACD) | (1 << ACBG)  // Analog Comparator Disable, Analog Comparator Bandgap Select
-        | (1 << ACIE) | (1 << ACIC)  // Analog Comparator Interrupt Enable, Analog Comparator Input Capture Enable      
-        | (0 << ACIS1) | (0 << ACIS0)  // Analog Comparator Interrupt Mode Select
-        ;
-    // Digital Input Disable Register 1
-   DIDR1 =
-        0
-        | (1 << AIN1D) | (1 << AIN0D)  // AIN1, AIN0 Digital Input Disable
-        ;
+
     // 16.11.1 TCCR1A – Timer/Counter1 Control Register A
     TCCR1A =
         0
@@ -82,34 +95,25 @@ void setup()
 void loop()
 {
 }
-// Catch Comparator event
-ISR(ANALOG_COMP_vect){
-      ACSR =
-        0
-        | (1 << ACD)  // Disable Comparator 
-        ;
-      ADMUX =
-        0
-        | (0 << MUX0) | (1 << MUX1) | (1 << MUX2) | (0 << MUX3)  // Select ADC6 ADC input
-        | (1 << REFS1) | (1 << REFS0)  // Refs 1.1v     
-        ;  
-      ADCSRA |= (1 << ADEN);  // Enable ADC
-}
+// Catch PD0 signal
+ISR(PCINT2_vect)
+      {
+// EIFR |= (0 << INTF0); //enable if not catch    
+      }
 // Catch ADC event
 ISR(ADC_vect){
       // update OCR1A
-      uint8_t atmp = ADCL; // Load ADC Result's Low Byte to temp
-      OCR1AH = ADCH; // Set the OCR1A High Byte to the High Byte in ADC Result 
-      OCR1AL = atmp; // Set the OCR1A Low Byte to temp
+      if (ADMUX == 0xC7) {
+        uint8_t atmp = ADCL; // Load ADC Result's Low Byte to temp
+        ICR1H = ADCH;
+        ICR1L = atmp;
+        ADMUX |= 0xC6;
+      }
+      else if (ADMUX == 0xC6){
+        uint8_t atmp = ADCL; // Load ADC Result's Low Byte to temp
+        OCR1AH = ADCH; // Set the OCR1A High Byte to the High Byte in ADC Result 
+        OCR1AL = atmp; // Set the OCR1A Low Byte to temp
+        ADMUX |= 0xC7;        
+      }
       
-      ADCSRA |= (0 << ADEN);  // Disable ADC
-      ADMUX =
-        0
-        | (1 << MUX0) | (1 << MUX1) | (1 << MUX2) // Select ADC7 Comparator's negative Input
-        | (1 << REFS1) | (1 << REFS0)  
-        ;
-      ACSR =
-        0
-        | (0 << ACD)  // enable Comparator
-        ;
 }
