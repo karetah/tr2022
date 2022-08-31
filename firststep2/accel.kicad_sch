@@ -1204,7 +1204,7 @@
     (uuid 017be8da-98cc-4faa-8bbe-159a19c39113)
     (property "Reference" "J8" (id 0) (at 190.119 71.628 0))
     (property "Value" "BACKLAMP" (id 1) (at 190.119 74.168 0))
-    (property "Footprint" "" (id 2) (at 189.484 77.47 0)
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (id 2) (at 189.484 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 189.484 77.47 0)
