@@ -70,11 +70,11 @@ void setup()
         0
         | (1 << WGM13) | (1 << WGM12)    // Fast PWM mode 14 (TOP = ICR1), part 2/2
         ;
-    // ICR1 is captured from Analog Comparator Output, but we define it to 10bit
+    // ICR1 default value 10bit
     ICR1 = 0x3FF;
-    // Init OCR1A
+    // Init OCR1A default 0
     OCR1A = 0x0;
-    // Init OCR1B
+    // Init OCR1B 
     OCR1B = 0x0;
     // 14.4.3 DDRB – The Port B Data Direction Register
     DDRB =
@@ -104,9 +104,9 @@ ISR(PCINT2_vect)
 ISR(ADC_vect){
       // update OCR1A
       if (ADMUX == 0xC7) {
-        uint8_t atmp = ADCL; // Load ADC Result's Low Byte to temp
-        ICR1H = ADCH;
-        ICR1L = atmp;
+        uint8_t atmp = ADCL; // READ ADCL, write to temp 
+        ICR1H = ADCH; // READ ADCH, WRITE ICR1H
+        ICR1L = atmp; // WRITE ICR1L
         ADMUX |= 0xC6;
       }
       else if (ADMUX == 0xC6){
