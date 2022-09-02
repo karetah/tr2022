@@ -25,6 +25,8 @@ void setup()
 
     uint8_t sreg = SREG;
     cli();
+
+    // Init Trigger Source for ADC
     // Pin Change Interrupt Control Register
     PCICR = 
           0
@@ -46,18 +48,17 @@ void setup()
           | (1 << ISC00) | (1 << ISC01)  // Any logical change on INT0 generates an interrupt request.
           ;        
 
-    // Stop timer before configuring
-    TCCR1B = 0;
 
+    // Setup ADC
     // ADC Control and Status Register A
    ADCSRA =
           0
           | (1 << ADEN) | (1 << ADATE) // Enable ADC, ADC Auto Trigger Enable
           | (1 << ADIE)  // ADC Interrupt Enable, 
+          | (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2) // Division Factor 128
           ;  
    ADMUX =
         0
-        | (1 << MUX0) | (1 << MUX1) | (1 << MUX2) // Select ADC7 ADC input 
         | (1 << REFS1) | (1 << REFS0)  // Refs 1.1v         
         ;  
    // ADMUX = 199; // 0xC7 // ADC7 // set TOP
@@ -69,6 +70,9 @@ void setup()
         | (0 << ADTS0) | (1 << ADTS1) | (0 << ADTS2) // ADC Auto Trigger Source : External Interrupt Request 0 
         ;
 
+    // Setup Timer1
+    // Stop timer before configuring
+    TCCR1B = 0;
     // 16.11.1 TCCR1A – Timer/Counter1 Control Register A
     TCCR1A =
         0
@@ -105,53 +109,57 @@ void setup()
     sei();
 
 
-    int error;
-  Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
   Wire.begin();
   Wire.beginTransmission(0x27);
-  error = Wire.endTransmission();
-  Serial.print("Error: ");
-  Serial.print(error);
-
-  if (error == 0) {
-    Serial.println(": LCD found.");
-    lcd.begin(16, 2); // initialize the lcd
-
-  } else {
-    Serial.println(": LCD not found.");
-  }
-
-  lcd.begin(16, 2);
+  int error = Wire.endTransmission();
+    if (error == 0) { lcd.begin(16, 2);} // initialize the lcd
+    else {
+    }
   lcd.setBacklight(127);
   lcd.home();
   lcd.clear();
   lcd.setCursor(0, 0);
+  lcd.print("TRACK");
+
+}
+
+void bLNK () {
+      if (mapped == HIGH) {digitalWrite(LED_BUILTIN, HIGH);mapped = LOW;}
+      else if (mapped == LOW) {digitalWrite(LED_BUILTIN, LOW);mapped = HIGH;}
 }
 
 void loop()
 {
     now = millis();
+    if (now - lastSecond > 1000) 
+    {
+      ADCSRA |= (1 << ADSC);
+      lcd.setCursor(0, 0);   
+      lcd.print(value);
+
+      bLNK();
+      lastSecond = now;
+    }
 }
 // Catch PD0 signal
 ISR(PCINT2_vect)
       {
-        
 // EIFR |= (0 << INTF0); //enable if not catch    
       }
 // Catch ADC event
 ISR(ADC_vect){
       // update OCR1A
       if (ADMUX == 0xC7) {
-        uint8_t atmp = ADCL; // READ ADCL, write to temp 
-        ICR1H = ADCH; // READ ADCH, WRITE ICR1H
-        ICR1L = atmp; // WRITE ICR1L
+        uint8_t ADCLow = ADCL;
+        uint8_t ADCHigh = ADCH;
+        uint16_t val = ADCLow + (ADCHigh << 8);
+        //ICR1 = val;
         ADMUX |= 0xC6;
       }
       else if (ADMUX == 0xC6){
-        uint8_t atmp = ADCL; // Load ADC Result's Low Byte to temp
-        OCR1AH = ADCH; // Set the OCR1A High Byte to the High Byte in ADC Result 
-        OCR1AL = atmp; // Set the OCR1A Low Byte to temp
+        uint16_t val = ADCL + (ADCH << 8);
+        OCR1 = val;
         ADMUX |= 0xC7;        
       }
-      
 }
