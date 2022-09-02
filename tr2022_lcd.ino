@@ -3,10 +3,22 @@
 #include "Arduino.h"
 #include <avr/io.h>
 
+#include <Wire.h>
+//SCL to A5, SDA to A4
+#include <LiquidCrystal_PCF8574.h>
+LiquidCrystal_PCF8574 lcd(0x27); 
+
 // http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf
 // https://content.arduino.cc/assets/Pinout-UNOrev3_latest.pdf
 
 uint8_t mux;
+
+
+int value;
+int mapped;
+unsigned long now;
+unsigned long lastSecond = 0;
+
 
 void setup()
 {
@@ -21,7 +33,7 @@ void setup()
     // Pin Change Mask Register 2
     PCMSK2 = 
           0
-          | (1 << PCINT16)  // PD0 (RXD)
+          | (1 << PCINT18)  // PD2 (D2)
           ;  
     // External Interrupt Mask Register
    EIMSK = 
@@ -91,14 +103,39 @@ void setup()
     // restore SREG
     SREG = sreg;
     sei();
+
+
+    int error;
+  Serial.begin(9600);
+  Wire.begin();
+  Wire.beginTransmission(0x27);
+  error = Wire.endTransmission();
+  Serial.print("Error: ");
+  Serial.print(error);
+
+  if (error == 0) {
+    Serial.println(": LCD found.");
+    lcd.begin(16, 2); // initialize the lcd
+
+  } else {
+    Serial.println(": LCD not found.");
+  }
+
+  lcd.begin(16, 2);
+  lcd.setBacklight(127);
+  lcd.home();
+  lcd.clear();
+  lcd.setCursor(0, 0);
 }
 
 void loop()
 {
+    now = millis();
 }
 // Catch PD0 signal
 ISR(PCINT2_vect)
       {
+        
 // EIFR |= (0 << INTF0); //enable if not catch    
       }
 // Catch ADC event
