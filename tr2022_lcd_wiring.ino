@@ -8,12 +8,15 @@ LiquidCrystal_PCF8574 lcd(0x27);
 uint8_t mux;
 
 
-int value;
+uint16_t value;
+uint16_t top;
+uint8_t error;
 int mapped;
 unsigned long now;
 unsigned long lastSecond = 0;
 uint8_t PWM_OUT = 9;
 uint8_t ACCEL = A6;
+uint8_t TOPMOTOR = A7;
 uint8_t REV_CTRL = 4;
 uint8_t REV_OUT = 3;
 bool REV_ST;
@@ -27,13 +30,18 @@ void setup()
   analogReference(INTERNAL);
   Wire.begin();
   Wire.beginTransmission(0x27);
-  int error = Wire.endTransmission();
-    if (error == 0) { lcd.begin(16, 2);} // initialize the lcd
+  error = Wire.endTransmission();
+    if (error == 0) {
+      lcd.begin(16, 2);
+      lcd.setBacklight(127);
+      lcd.home();
+      lcd.clear();
+      digitalWrite(LED_BUILTIN, HIGH);
+      } // initialize the lcd
     else {
+      digitalWrite(LED_BUILTIN, LOW);
     }
-  lcd.setBacklight(127);
-  lcd.home();
-  lcd.clear();
+
 }
 
 void setupPWM16() {
@@ -62,15 +70,22 @@ void bLNK () {
 void loop()
 {
     now = millis();
+    top = analogRead(TOPMOTOR);
+    ICR1 = top;
     value = analogRead(ACCEL);
     analogWrite16(PWM_OUT,value);
 
     if (now - lastSecond > 1000) 
     {
+        if (error == 0) {
       lcd.setCursor(0, 0);   
       lcd.print(value);
+      lcd.setCursor(0, 1);   
+      lcd.print(top);
+        }
 
-      bLNK();
+
+    //  bLNK();
       lastSecond = now;
     }
 }
